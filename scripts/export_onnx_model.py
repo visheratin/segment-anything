@@ -265,7 +265,9 @@ def export_decoder(
 
     if onnxruntime_exists:
         ort_inputs = {k: to_numpy(v) for k, v in dummy_inputs.items()}
-        ort_session = onnxruntime.InferenceSession(output)
+        # set cpu provider default
+        providers = ["CPUExecutionProvider"]
+        ort_session = onnxruntime.InferenceSession(output, providers=providers)
         _ = ort_session.run(None, ort_inputs)
         print("Decoder has successfully been run with ONNXRuntime.")
 
